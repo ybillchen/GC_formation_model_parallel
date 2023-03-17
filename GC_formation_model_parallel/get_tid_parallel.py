@@ -24,7 +24,7 @@ def combine_gc(params):
             root_name = fin_name[:-4] + '_offset_root.txt'
 
             # load GC id
-            gcid, quality = np.loadtxt(gcid_name, unpack = True, dtype='int64')
+            gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
             # load root offset
             hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
@@ -78,7 +78,7 @@ def combine_gc_seed(params):
         root_name = fin_name[:-4] + '_offset_root.txt'
 
         # load GC id
-        gcid, quality = np.loadtxt(gcid_name, unpack = True, dtype='int64')
+        gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
@@ -153,7 +153,7 @@ def assign_eig(params):
             root_name = fin_name[:-4] + '_offset_root.txt'
 
             # load GC id
-            gcid, quality = np.loadtxt(gcid_name, unpack = True, dtype='int64')
+            gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
             # load root offset
             hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
@@ -219,7 +219,7 @@ def assign_eig_seed(params):
         root_name = fin_name[:-4] + '_offset_root.txt'
 
         # load GC id
-        gcid, quality = np.loadtxt(gcid_name, unpack = True, dtype='int64')
+        gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
@@ -341,7 +341,7 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
     root_name = run_params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
+    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(

@@ -61,6 +61,7 @@ def run_parallel(params, Np=32, seed_based=False, stage1=True, stage2=True):
             p.starmap(run_serial, para_list)
 
         # TODO: Maybe try MPI to enable running on multiple modes? But not for now
+        # TODO: Should be run with: `mpiexec -n 1 -usize 16 python xxx.py`
         # executor = MPIPoolExecutor(max_workers=Np)
         # executor.starmap(run_serial, para_list)
 
