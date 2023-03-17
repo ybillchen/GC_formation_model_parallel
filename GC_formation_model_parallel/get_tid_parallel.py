@@ -260,6 +260,7 @@ def assign_eig_seed(params):
 # get tidal tensor for one galaxy
 def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
+    file_prefix = params['file_prefix']
 
     isExist = os.path.exists(basepath)
     if not isExist:
@@ -279,6 +280,8 @@ def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params):
 
 def check_independent_status(params, irange=None):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
+    file_prefix = params['file_prefix']
+    
     if irange is None:
         irange = range(len(params['subs']))
 
@@ -332,10 +335,10 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
 
     run_params['file_prefix'] = file_prefix
 
-    if seed_based:
-        combine_gc_seed(run_params)
-    else:
-        combine_gc(run_params)
+    # if seed_based:
+    #     combine_gc_seed(run_params)
+    # else:
+    #     combine_gc(run_params)
 
     # load data
     gcid_name = run_params['resultspath'] + file_prefix + '_gcid.txt'
@@ -365,6 +368,3 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
         assign_eig_seed(run_params)
     else:
         assign_eig(run_params)
-
-if __name__ == '__main__':
-    get_tid_parallel(params, file_prefix='combine', seed_based=False)
