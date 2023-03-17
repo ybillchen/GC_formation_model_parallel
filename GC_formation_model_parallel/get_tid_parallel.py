@@ -295,7 +295,7 @@ def combine_independent(params, irange=None):
     # load GC id
     gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
 
-    tag = np.zeros([len(gcid), len(full_snap)], dtype=int)=
+    tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig1 = np.zeros([len(gcid), len(full_snap)])
     eig2 = np.zeros([len(gcid), len(full_snap)])
     eig3 = np.zeros([len(gcid), len(full_snap)])
