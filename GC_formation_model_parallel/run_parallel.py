@@ -1,6 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
-from multiprocessing import Pool
+# from multiprocessing import Pool
+from mpi4py import MPIPoolExecutor
 import copy
 import numpy as np
 
@@ -55,7 +56,10 @@ def run_parallel(params, Np=32, seed_based=False):
                 para_list.append((copy.copy(run_params), p))
                 p += 1
 
-    with Pool(Np) as p:
-        p.starmap(run_serial, para_list)
+    # with Pool(Np) as p:
+    #     p.starmap(run_serial, para_list)
+
+    executor = MPIPoolExecutor(max_workers=Np)
+    executor.starmap(run_serial, para_list)
 
     get_tid_parallel(params, Np, file_prefix = 'combine', seed_based=seed_based)
