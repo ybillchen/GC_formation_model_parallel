@@ -54,6 +54,8 @@ def run_parallel(params, Np=32, seed_based=False):
                 run_params['p3'] = p3
                 para_list.append((copy.copy(run_params), p))
                 p += 1
+        for p in para_list:
+            print(p['p2'], p['p3'])
 
     with Pool(Np) as p:
         p.starmap(run_serial, para_list)
