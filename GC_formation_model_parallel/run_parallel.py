@@ -1,7 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 # from multiprocessing import Pool
-from mpi4py import MPIPoolExecutor
+from mpi4py.futures import MPIPoolExecutor
 import copy
 import numpy as np
 
