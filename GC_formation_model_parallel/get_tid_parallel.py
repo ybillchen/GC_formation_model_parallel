@@ -1,5 +1,6 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
+import os
 from copy import copy
 from multiprocessing import Pool
 
