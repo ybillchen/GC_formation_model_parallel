@@ -1,16 +1,16 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
+from copy import copy
 from multiprocessing import Pool
-# from mpi4py.futures import MPIPoolExecutor
-import copy
+
 import numpy as np
+# from mpi4py.futures import MPIPoolExecutor # NOTE: not used so far
 
 from GC_formation_model import astro_utils
 from GC_formation_model.form import form
 from GC_formation_model.offset import offset
 from GC_formation_model.assign import assign
-from GC_formation_model.get_tid import get_tid
-from GC_formation_model.evolve import evolve
+# from GC_formation_model.evolve import evolve # NOTE: not used so far
 
 from .get_tid_parallel import get_tid_parallel
 
@@ -38,7 +38,7 @@ def run_serial(params, p):
         print('\nModel was run on %d halo(s) at process %d.\n'%(len(params['subs']),p))
 
 def run_parallel(params, Np=32, seed_based=False):
-    run_params = copy.copy(params)
+    run_params = copy(params)
 
     para_list = []
     p = 0
@@ -46,19 +46,20 @@ def run_parallel(params, Np=32, seed_based=False):
     if seed_based:
         for s in params['seed_list']:
             run_params['seed'] = s
-            para_list.append((copy.copy(run_params), p))
+            para_list.append((copy(run_params), p))
             p += 1
     else:
         for p2 in params['p2_arr']:
             for p3 in params['p3_arr']:
                 run_params['p2'] = p2
                 run_params['p3'] = p3
-                para_list.append((copy.copy(run_params), p))
+                para_list.append((copy(run_params), p))
                 p += 1
 
     with Pool(Np) as p:
         p.starmap(run_serial, para_list)
 
+    # TODO: Maybe try MPI to enable running on multiple modes? But not for now
     # executor = MPIPoolExecutor(max_workers=Np)
     # executor.starmap(run_serial, para_list)
 
