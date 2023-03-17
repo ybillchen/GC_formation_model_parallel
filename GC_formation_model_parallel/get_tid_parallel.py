@@ -3,7 +3,6 @@
 from multiprocessing import Pool
 import numpy as np
 
-from params import params
 from GC_formation_model.get_tid import get_tid, get_tid_unit
 
 __all__ = ['combine_gc', 'combine_gc_seed', 'assign_eig', 'assign_eig_seed', 

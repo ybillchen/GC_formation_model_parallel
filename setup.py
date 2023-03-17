@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
     long_description = f.read()
 
 version = {}
-with open('GC_formation_model/version.py') as fp:
+with open('GC_formation_model_parallel/version.py') as fp:
     exec(fp.read(), version)
 
 setup(

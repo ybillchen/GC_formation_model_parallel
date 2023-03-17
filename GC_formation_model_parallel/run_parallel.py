@@ -1,7 +1,6 @@
 from multiprocessing import Pool
 import numpy as np
 
-from params import params
 from GC_formation_model import astro_utils
 from GC_formation_model.form import form
 from GC_formation_model.offset import offset
@@ -54,6 +53,3 @@ def run_parallel(params, seed_based=False):
         p.starmap(run_serial, para_list)
 
     get_tid_parallel(params, file_prefix = 'combine', seed_based=seed_based)
-
-if __name__ == '__main__':
-    run_parallel(params, seed_based=False)
