@@ -15,10 +15,10 @@ from .get_tid_parallel import get_tid_parallel
 
 __all__ = ['run_parallel']
 
-def run_serial(params):
+def run_serial(params, p):
 
     if params['verbose']:
-        print('\nRuning model on %d halo(s).'%len(params['subs']))
+        print('\nRuning model on %d halo(s) at process %d.'%len(params['subs'],p))
 
     allcat_name = params['allcat_base'] + '_s-%d_p2-%g_p3-%g.txt'%(
         params['seed'], params['p2'], params['p3'])
@@ -34,23 +34,26 @@ def run_serial(params):
     assign(run_params)
 
     if params['verbose']:
-        print('\nModel was run on %d halo(s).\n'%len(params['subs']))
+        print('\nModel was run on %d halo(s) at process %d.\n'%len(params['subs'],p))
 
 def run_parallel(params, Np=32, seed_based=False):
     run_params = copy.copy(params)
 
     para_list = []
+    p = 0
 
     if seed_based:
         for s in params['seed_list']:
             run_params['seed'] = s
-            para_list.append(run_params)
+            para_list.append((run_params, p))
+            p += 1
     else:
         for p2 in params['p2_arr']:
             for p3 in params['p3_arr']:
                 run_params['p2'] = p2
                 run_params['p3'] = p3
-                para_list.append(run_params)
+                para_list.append((run_params, p))
+                p += 1
 
     with Pool(Np) as p:
         p.starmap(run_serial, para_list)
