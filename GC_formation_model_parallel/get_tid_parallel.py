@@ -1,6 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 from multiprocessing import Pool
+import copy
 import numpy as np
 
 from GC_formation_model.get_tid import get_tid, get_tid_unit
@@ -325,7 +326,7 @@ def combine_independent(params, irange=None):
         np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
 
 def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
-    run_params = np.copy(params)
+    run_params = copy.copy(params)
 
     run_params['file_prefix'] = file_prefix
 

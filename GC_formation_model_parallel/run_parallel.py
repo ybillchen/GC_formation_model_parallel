@@ -1,4 +1,7 @@
+# Licensed under BSD-3-Clause License - see LICENSE
+
 from multiprocessing import Pool
+import copy
 import numpy as np
 
 from GC_formation_model import astro_utils
@@ -34,7 +37,7 @@ def run_serial(params):
         print('\nModel was run on %d halo(s).\n'%len(params['subs']))
 
 def run_parallel(params, Np=32, seed_based=False):
-    run_params = np.copy(params)
+    run_params = copy.copy(params)
 
     para_list = []
 
