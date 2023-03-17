@@ -324,7 +324,7 @@ def combine_independent(params, irange=None):
         np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
         np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
 
-def get_tid_parallel(params, file_prefix='combine', seed_based=False):
+def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
     run_params = np.copy(params)
 
     run_params['file_prefix'] = file_prefix

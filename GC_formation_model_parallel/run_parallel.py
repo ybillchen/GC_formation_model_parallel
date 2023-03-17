@@ -33,7 +33,7 @@ def run_serial(params):
     if params['verbose']:
         print('\nModel was run on %d halo(s).\n'%len(params['subs']))
 
-def run_parallel(params, seed_based=False):
+def run_parallel(params, Np=32, seed_based=False):
     run_params = np.copy(params)
 
     para_list = []
@@ -52,4 +52,4 @@ def run_parallel(params, seed_based=False):
     with Pool(Np) as p:
         p.starmap(run_serial, para_list)
 
-    get_tid_parallel(params, file_prefix = 'combine', seed_based=seed_based)
+    get_tid_parallel(params, Np, file_prefix = 'combine', seed_based=seed_based)
