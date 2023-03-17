@@ -18,7 +18,7 @@ __all__ = ['run_parallel']
 def run_serial(params, p):
 
     if params['verbose']:
-        print('\nRuning model on %d halo(s) at process %d.'%len(params['subs'],p))
+        print('\nRuning model on %d halo(s) at process %d.'%(len(params['subs']),p))
 
     allcat_name = params['allcat_base'] + '_s-%d_p2-%g_p3-%g.txt'%(
         params['seed'], params['p2'], params['p3'])
@@ -34,7 +34,7 @@ def run_serial(params, p):
     assign(run_params)
 
     if params['verbose']:
-        print('\nModel was run on %d halo(s) at process %d.\n'%len(params['subs'],p))
+        print('\nModel was run on %d halo(s) at process %d.\n'%(len(params['subs']),p))
 
 def run_parallel(params, Np=32, seed_based=False):
     run_params = copy.copy(params)
