@@ -44,13 +44,13 @@ def run_parallel(params, Np=32, seed_based=False):
     if seed_based:
         for s in params['seed_list']:
             run_params['seed'] = s
-            para_list.append((run_params))
+            para_list.append(run_params)
     else:
         for p2 in params['p2_arr']:
             for p3 in params['p3_arr']:
                 run_params['p2'] = p2
                 run_params['p3'] = p3
-                para_list.append((run_params))
+                para_list.append(run_params)
 
     with Pool(Np) as p:
         p.starmap(run_serial, para_list)
