@@ -313,7 +313,7 @@ def combine_independent(params, irange=None):
     gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
 
     # load root offset
-    hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
+    hid_root, idx_beg, idx_end = np.loadtxt(
         root_name, unpack=True, dtype='int64')
 
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
