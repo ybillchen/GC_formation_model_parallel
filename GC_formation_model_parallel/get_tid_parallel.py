@@ -285,10 +285,21 @@ def check_independent_status(params, irange=None):
     if irange is None:
         irange = range(len(params['subs']))
 
+    all_file_exist = True
+
     for i in irange:
         file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
+        all_file_exist &= file_exist
         if params['verbose']:
-            print('i: %d'%(i), file_exist)
+            if not file_exist:
+                print('file %d does not exist'%i)
+
+    if params['verbose']:
+        if all_file_exist
+            print('All files exist!')
+        else:
+            print('Not all files exist!')
+    assert all_file_exist
 
 def combine_independent(params, irange=None):
     mpb_only = params['mpb_only']
@@ -304,7 +315,7 @@ def combine_independent(params, irange=None):
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
         root_name, unpack=True, dtype='int64')
-    
+
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig1 = np.zeros([len(gcid), len(full_snap)])
     eig2 = np.zeros([len(gcid), len(full_snap)])
