@@ -281,7 +281,7 @@ def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params):
 def check_independent_status(params, irange=None):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
     file_prefix = params['file_prefix']
-    
+
     if irange is None:
         irange = range(len(params['subs']))
 
@@ -330,10 +330,11 @@ def combine_independent(params, irange=None):
         np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
         np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
 
-def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
+def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False, skip=None):
     run_params = copy(params)
 
     run_params['file_prefix'] = file_prefix
+    run_params['skip'] = skip
 
     if seed_based:
         combine_gc_seed(run_params)

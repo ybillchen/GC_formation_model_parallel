@@ -37,7 +37,7 @@ def run_serial(params, p):
     if params['verbose']:
         print('\nModel was run on %d halo(s) at process %d.\n'%(len(params['subs']),p))
 
-def run_parallel(params, Np=32, seed_based=False, stage1=True, stage2=True):
+def run_parallel(params, Np=32, seed_based=False, stage1=True, stage2=True, skip=None):
     if stage1:
         run_params = copy(params)
 
@@ -66,4 +66,4 @@ def run_parallel(params, Np=32, seed_based=False, stage1=True, stage2=True):
         # executor.starmap(run_serial, para_list)
 
     if stage2:
-        get_tid_parallel(params, Np, file_prefix = 'combine', seed_based=seed_based)
+        get_tid_parallel(params, Np, file_prefix = 'combine', seed_based=seed_based, skip=skip)
