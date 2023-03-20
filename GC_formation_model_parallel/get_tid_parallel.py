@@ -295,7 +295,7 @@ def check_independent_status(params, irange=None):
                 print('file %d does not exist'%i)
 
     if params['verbose']:
-        if all_file_exist
+        if all_file_exist:
             print('All files exist!')
         else:
             print('Not all files exist!')
