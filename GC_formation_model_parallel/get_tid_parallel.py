@@ -125,7 +125,6 @@ def assign_eig(params):
     mpb_only = params['mpb_only']
     d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
-    base = params['base']
     file_prefix = params['file_prefix']
     gcid_name = params['resultspath'] + file_prefix + '_gcid.txt'
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
@@ -193,7 +192,6 @@ def assign_eig_seed(params):
     mpb_only = params['mpb_only']
     d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
-    base = params['base']
     file_prefix = params['file_prefix']
     gcid_name = params['resultspath'] + file_prefix + '_gcid.txt'
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
@@ -293,7 +291,6 @@ def check_independent_status(params, irange=None):
 def combine_independent(params, irange=None):
     mpb_only = params['mpb_only']
     z_list = params['redshift_snap']
-    base = params['base']
     file_prefix = params['file_prefix']
     gcid_name = params['resultspath'] + file_prefix + '_gcid.txt'
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
