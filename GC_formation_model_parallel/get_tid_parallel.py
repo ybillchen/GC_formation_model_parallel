@@ -328,7 +328,7 @@ def combine_independent(params, irange=None):
 
     for i in irange:
         if params['verbose']:
-            print('NO. %d'%i)
+            print('Combining data for halo NO. %d'%i)
 
         tag_now = np.loadtxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
         eig1_now = np.loadtxt(basepath+file_prefix+'_tideig1_i%d.txt'%(i))
