@@ -335,10 +335,10 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False):
 
     run_params['file_prefix'] = file_prefix
 
-    # if seed_based:
-    #     combine_gc_seed(run_params)
-    # else:
-    #     combine_gc(run_params)
+    if seed_based:
+        combine_gc_seed(run_params)
+    else:
+        combine_gc(run_params)
 
     # load data
     gcid_name = run_params['resultspath'] + file_prefix + '_gcid.txt'
