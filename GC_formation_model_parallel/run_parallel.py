@@ -1,10 +1,10 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 from copy import copy
-# from multiprocessing import Pool
+from multiprocessing import Pool
 
 import numpy as np
-from mpi4py.futures import MPIPoolExecutor # NOTE: not used so far
+# from mpi4py.futures import MPIPoolExecutor # NOTE: not used so far
 
 from GC_formation_model import astro_utils
 from GC_formation_model.form import form
@@ -57,13 +57,13 @@ def run_parallel(params, Np=32, seed_based=False, stage1=True, stage2=True, skip
                     para_list.append((copy(run_params), p))
                     p += 1
 
-        # with Pool(Np) as p:
-        #     p.starmap(run_serial, para_list)
+        with Pool(Np) as p:
+            p.starmap(run_serial, para_list)
 
         # TODO: Maybe try MPI to enable running on multiple modes? But not for now
         # TODO: Should be run with: `mpiexec -n 1 -usize 16 python xxx.py`
-        executor = MPIPoolExecutor(max_workers=Np)
-        executor.starmap(run_serial, para_list)
+        # executor = MPIPoolExecutor(max_workers=Np)
+        # executor.starmap(run_serial, para_list)
 
     if stage2:
         get_tid_parallel(params, Np, file_prefix = 'combine', seed_based=seed_based, skip=skip)
