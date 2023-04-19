@@ -310,11 +310,11 @@ def combine_independent(params, irange=None):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')[0]
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')[:3]
 
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig1 = np.zeros([len(gcid), len(full_snap)])
