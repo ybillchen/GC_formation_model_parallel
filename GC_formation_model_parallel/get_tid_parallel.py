@@ -351,7 +351,7 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, see
     if param_based or seed_based:
         run_params['file_prefix'] = file_prefix
     else:
-        run_params['file_prefix'] = allcat_name = params['allcat_base'] + \
+        run_params['file_prefix'] = params['allcat_base'] + \
             '_s-%d_p2-%g_p3-%g'%(params['seed'], params['p2'], params['p3'])
 
     run_params['skip'] = skip
@@ -364,8 +364,8 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, see
         pass
 
     # load data
-    gcid_name = run_params['resultspath'] + file_prefix + '_gcid.txt'
-    root_name = run_params['resultspath'] + file_prefix + '_offset_root.txt'
+    gcid_name = run_params['resultspath'] + run_params['file_prefix'] + '_gcid.txt'
+    root_name = run_params['resultspath'] + run_params['file_prefix'] + '_offset_root.txt'
 
     # load GC id
     if param_based or seed_based:
