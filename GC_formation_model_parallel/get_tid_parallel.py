@@ -345,23 +345,33 @@ def combine_independent(params, irange=None):
         np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
         np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
 
-def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False, skip=None):
+def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, seed_based=False, skip=None):
     run_params = copy(params)
 
-    run_params['file_prefix'] = file_prefix
+    if param_based or seed_based:
+        run_params['file_prefix'] = file_prefix
+    else:
+        run_params['file_prefix'] = allcat_name = params['allcat_base'] + \
+            '_s-%d_p2-%g_p3-%g'%(params['seed'], params['p2'], params['p3'])
+
     run_params['skip'] = skip
 
-    if seed_based:
+    if param_based:
+        combine_gc(run_params)
+    elif seed_based:
         combine_gc_seed(run_params)
     else:
-        combine_gc(run_params)
+        pass
 
     # load data
     gcid_name = run_params['resultspath'] + file_prefix + '_gcid.txt'
     root_name = run_params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    if param_based or seed_based:
+        gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    else:
+        gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
@@ -380,7 +390,9 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False, ski
     check_independent_status(run_params)
     combine_independent(run_params)
 
+    if param_based:
+        assign_eig(run_params)
     if seed_based:
         assign_eig_seed(run_params)
     else:
-        assign_eig(run_params)
+        pass
