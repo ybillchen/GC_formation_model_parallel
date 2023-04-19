@@ -368,10 +368,7 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, see
     root_name = run_params['resultspath'] + run_params['file_prefix'] + '_offset_root.txt'
 
     # load GC id
-    if param_based or seed_based:
-        gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
-    else:
-        gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
+    gcid = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')[0]
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
