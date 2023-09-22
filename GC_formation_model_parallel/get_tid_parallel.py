@@ -29,7 +29,7 @@ def combine_gc(params):
 
             # load root offset
             hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-                root_name, unpack = True, dtype='int64')
+                root_name, ndmin=2, unpack = True, dtype='int64')
 
             # create the combined catalog at first
             if idx_p2 == 0 and idx_p3 == 0:
@@ -83,7 +83,7 @@ def combine_gc_seed(params):
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-            root_name, unpack = True, dtype='int64')
+            root_name, ndmin=2, unpack = True, dtype='int64')
 
         # create the combined catalog at first
         if k == 0:
@@ -131,11 +131,11 @@ def assign_eig(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')
 
     eig1 = np.loadtxt(params['resultspath']+file_prefix+'_tideig1.txt')
     eig2 = np.loadtxt(params['resultspath']+file_prefix+'_tideig2.txt')
@@ -199,11 +199,11 @@ def assign_eig_seed(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')
 
     eig1 = np.loadtxt(params['resultspath']+file_prefix+'_tideig1.txt')
     eig2 = np.loadtxt(params['resultspath']+file_prefix+'_tideig2.txt')
