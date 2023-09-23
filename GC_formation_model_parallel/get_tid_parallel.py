@@ -224,7 +224,7 @@ def assign_eig_seed(params):
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-            root_name, unpack = True, dtype='int64')
+            root_name, ndmin=2, unpack = True, dtype='int64')
 
         eig_1 = np.zeros([len(gcid), len(full_snap)])
         eig_2 = np.zeros([len(gcid), len(full_snap)])
