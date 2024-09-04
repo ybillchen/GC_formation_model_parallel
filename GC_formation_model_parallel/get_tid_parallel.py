@@ -29,7 +29,7 @@ def combine_gc(params):
 
             # load root offset
             hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-                root_name, unpack = True, dtype='int64')
+                root_name, ndmin=2, unpack = True, dtype='int64')
 
             # create the combined catalog at first
             if idx_p2 == 0 and idx_p3 == 0:
@@ -83,7 +83,7 @@ def combine_gc_seed(params):
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-            root_name, unpack = True, dtype='int64')
+            root_name, ndmin=2, unpack = True, dtype='int64')
 
         # create the combined catalog at first
         if k == 0:
@@ -131,11 +131,11 @@ def assign_eig(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')
 
     eig1 = np.loadtxt(params['resultspath']+file_prefix+'_tideig1.txt')
     eig2 = np.loadtxt(params['resultspath']+file_prefix+'_tideig2.txt')
@@ -158,7 +158,7 @@ def assign_eig(params):
 
             # load root offset
             hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-                root_name, unpack = True, dtype='int64')
+                root_name, ndmin=2, unpack = True, dtype='int64')
 
             eig_1 = np.zeros([len(gcid), len(full_snap)])
             eig_2 = np.zeros([len(gcid), len(full_snap)])
@@ -199,11 +199,11 @@ def assign_eig_seed(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')
 
     eig1 = np.loadtxt(params['resultspath']+file_prefix+'_tideig1.txt')
     eig2 = np.loadtxt(params['resultspath']+file_prefix+'_tideig2.txt')
@@ -224,7 +224,7 @@ def assign_eig_seed(params):
 
         # load root offset
         hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-            root_name, unpack = True, dtype='int64')
+            root_name, ndmin=2, unpack = True, dtype='int64')
 
         eig_1 = np.zeros([len(gcid), len(full_snap)])
         eig_2 = np.zeros([len(gcid), len(full_snap)])
@@ -258,7 +258,7 @@ def assign_eig_seed(params):
 
 
 # get tidal tensor for one galaxy
-def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params):
+def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params, k=-1):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
     file_prefix = params['file_prefix']
 
@@ -266,33 +266,54 @@ def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params):
     if not isExist:
        os.makedirs(basepath)
 
-    file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
+    if k < 0:
+        file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
+    else:
+        file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d_j%d.txt'%(i,k))
 
     if file_exist:
         return 0
 
-    tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
+    tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params, k)
 
-    np.savetxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i), tag_i, fmt='%d')
-    np.savetxt(basepath+file_prefix+'_tideig1_i%d.txt'%(i), eig_1_i, fmt='%.3e')
-    np.savetxt(basepath+file_prefix+'_tideig2_i%d.txt'%(i), eig_2_i, fmt='%.3e')
-    np.savetxt(basepath+file_prefix+'_tideig3_i%d.txt'%(i), eig_3_i, fmt='%.3e')
+    if k < 0:
+        np.savetxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i), tag_i, fmt='%d')
+        np.savetxt(basepath+file_prefix+'_tideig1_i%d.txt'%(i), eig_1_i, fmt='%.3e')
+        np.savetxt(basepath+file_prefix+'_tideig2_i%d.txt'%(i), eig_2_i, fmt='%.3e')
+        np.savetxt(basepath+file_prefix+'_tideig3_i%d.txt'%(i), eig_3_i, fmt='%.3e')
+    else:
+        np.savetxt(basepath+file_prefix+'_tidtag_i%d_j%d.txt'%(i,k), tag_i, fmt='%d')
+        np.savetxt(basepath+file_prefix+'_tideig1_i%d_j%d.txt'%(i,k), eig_1_i, fmt='%.3e')
+        np.savetxt(basepath+file_prefix+'_tideig2_i%d_j%d.txt'%(i,k), eig_2_i, fmt='%.3e')
+        np.savetxt(basepath+file_prefix+'_tideig3_i%d_j%d.txt'%(i,k), eig_3_i, fmt='%.3e')
 
-def check_independent_status(params, irange=None):
+def check_independent_status(params, irange=None, checkj=False, jrange=None):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
     file_prefix = params['file_prefix']
 
     if irange is None:
         irange = range(len(params['subs']))
 
+    if jrange is None:
+        jrange = range(len(params['full_snap']))
+
     all_file_exist = True
 
-    for i in irange:
-        file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
-        all_file_exist &= file_exist
-        if params['verbose']:
-            if not file_exist:
-                print('file %d does not exist'%i)
+    if checkj:
+        for i in irange:
+            for j in jrange:
+                file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d_j%d.txt'%(i,j))
+                all_file_exist &= file_exist
+                if params['verbose']:
+                    if not file_exist:
+                        print('file %d does not exist'%i)
+    else:
+        for i in irange:
+            file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
+            all_file_exist &= file_exist
+            if params['verbose']:
+                if not file_exist:
+                    print('file %d does not exist'%i)
 
     if params['verbose']:
         if all_file_exist:
@@ -301,7 +322,7 @@ def check_independent_status(params, irange=None):
             print('Not all files exist!')
     assert all_file_exist
 
-def combine_independent(params, irange=None):
+def combine_independent(params, irange=None, checkj=False, jrange=None):
     mpb_only = params['mpb_only']
     z_list = params['redshift_snap']
     file_prefix = params['file_prefix']
@@ -310,11 +331,11 @@ def combine_independent(params, irange=None):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')[0]
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')[:3]
 
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig1 = np.zeros([len(gcid), len(full_snap)])
@@ -326,50 +347,83 @@ def combine_independent(params, irange=None):
     if irange is None:
         irange = range(len(params['subs']))
 
-    for i in irange:
-        if params['verbose']:
-            print('Combining data for halo NO. %d'%i)
+    if jrange is None:
+        jrange = range(len(full_snap))
 
-        tag_now = np.loadtxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
-        eig1_now = np.loadtxt(basepath+file_prefix+'_tideig1_i%d.txt'%(i))
-        eig2_now = np.loadtxt(basepath+file_prefix+'_tideig2_i%d.txt'%(i))
-        eig3_now = np.loadtxt(basepath+file_prefix+'_tideig3_i%d.txt'%(i))
+    if checkj:
+        for i in irange:
+            for j in jrange:
+                if params['verbose']:
+                    print('Combining data for halo NO. %d snap %d'%(i,full_snap[j]))
 
-        tag[idx_beg[i]:idx_end[i]] = tag_now
-        eig1[idx_beg[i]:idx_end[i]] = eig1_now
-        eig2[idx_beg[i]:idx_end[i]] = eig2_now
-        eig3[idx_beg[i]:idx_end[i]] = eig3_now
+                tag_now = np.loadtxt(basepath+file_prefix+'_tidtag_i%d_j%d.txt'%(i,j))
+                eig1_now = np.loadtxt(basepath+file_prefix+'_tideig1_i%d_j%d.txt'%(i,j))
+                eig2_now = np.loadtxt(basepath+file_prefix+'_tideig2_i%d_j%d.txt'%(i,j))
+                eig3_now = np.loadtxt(basepath+file_prefix+'_tideig3_i%d_j%d.txt'%(i,j))
 
-        np.savetxt(params['resultspath']+file_prefix+'_tidtag.txt', tag, fmt='%d')
-        np.savetxt(params['resultspath']+file_prefix+'_tideig1.txt', eig1, fmt='%.3e')
-        np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
-        np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
+                tag[idx_beg[i]:idx_end[i],j] = tag_now
+                eig1[idx_beg[i]:idx_end[i],j] = eig1_now
+                eig2[idx_beg[i]:idx_end[i],j] = eig2_now
+                eig3[idx_beg[i]:idx_end[i],j] = eig3_now
 
-def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False, skip=None):
+    else:
+        for i in irange:
+            if params['verbose']:
+                print('Combining data for halo NO. %d'%i)
+
+            tag_now = np.loadtxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
+            eig1_now = np.loadtxt(basepath+file_prefix+'_tideig1_i%d.txt'%(i))
+            eig2_now = np.loadtxt(basepath+file_prefix+'_tideig2_i%d.txt'%(i))
+            eig3_now = np.loadtxt(basepath+file_prefix+'_tideig3_i%d.txt'%(i))
+
+            tag[idx_beg[i]:idx_end[i]] = tag_now
+            eig1[idx_beg[i]:idx_end[i]] = eig1_now
+            eig2[idx_beg[i]:idx_end[i]] = eig2_now
+            eig3[idx_beg[i]:idx_end[i]] = eig3_now
+
+    np.savetxt(params['resultspath']+file_prefix+'_tidtag.txt', tag, fmt='%d')
+    np.savetxt(params['resultspath']+file_prefix+'_tideig1.txt', eig1, fmt='%.3e')
+    np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
+    np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
+
+def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, seed_based=False, 
+    skip=None, checkj=False):
     run_params = copy(params)
 
-    run_params['file_prefix'] = file_prefix
+    if param_based or seed_based:
+        run_params['file_prefix'] = file_prefix
+    else:
+        run_params['file_prefix'] = params['allcat_base'] + \
+            '_s-%d_p2-%g_p3-%g'%(params['seed'], params['p2'], params['p3'])
+
     run_params['skip'] = skip
 
-    if seed_based:
+    if param_based:
+        combine_gc(run_params)
+    elif seed_based:
         combine_gc_seed(run_params)
     else:
-        combine_gc(run_params)
+        pass
 
     # load data
-    gcid_name = run_params['resultspath'] + file_prefix + '_gcid.txt'
-    root_name = run_params['resultspath'] + file_prefix + '_offset_root.txt'
+    gcid_name = run_params['resultspath'] + run_params['file_prefix'] + '_gcid.txt'
+    root_name = run_params['resultspath'] + run_params['file_prefix'] + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')[0]
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
         root_name, ndmin=2, unpack=True, dtype='int64')[:3]
     
     para_list = []
-    for i in range(len(run_params['subs'])):
-        para_list.append((i, gcid, hid_root, idx_beg, idx_end, run_params))
+    if checkj:
+        for i in range(len(run_params['subs'])):
+            for j in range(len(run_params['full_snap'])):
+                para_list.append((i, gcid, hid_root, idx_beg, idx_end, run_params, j))
+    else:
+        for i in range(len(run_params['subs'])):
+            para_list.append((i, gcid, hid_root, idx_beg, idx_end, run_params))
 
     with Pool(Np) as p:
         p.starmap(get_tid_i, para_list)
@@ -377,10 +431,12 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', seed_based=False, ski
     # # not parrelization
     # get_tid_i(7, gcid, hid_root, idx_beg, idx_end, params)
 
-    check_independent_status(run_params)
-    combine_independent(run_params)
+    check_independent_status(run_params, checkj=checkj)
+    combine_independent(run_params, checkj=checkj)
 
+    if param_based:
+        assign_eig(run_params)
     if seed_based:
         assign_eig_seed(run_params)
     else:
-        assign_eig(run_params)
+        pass
