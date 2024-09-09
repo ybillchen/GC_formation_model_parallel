@@ -173,8 +173,7 @@ def assign_eig(params):
                 j = j[0]
                 
                 xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
-                    gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True,
-                    assume_unique=True)
+                    gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
 
                 idx_1 = idx_1 + idx_beg[i]
                 idx_2 = idx_2 + idx_beg_c[j]
@@ -239,8 +238,7 @@ def assign_eig_seed(params):
             j = j[0]
             
             xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
-                gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True,
-                assume_unique=True)
+                gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
 
             idx_1 = idx_1 + idx_beg[i]
             idx_2 = idx_2 + idx_beg_c[j]
