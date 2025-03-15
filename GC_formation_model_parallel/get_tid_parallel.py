@@ -176,9 +176,9 @@ def assign_eig(params):
                 #     gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
 
                 idx_1 = np.arange(len(gcid[idx_beg[i]:idx_end[i]]), dtype=int)
-                sort_order = np.argsort(gcid_c)
-                sorted_gcid_c = gcid_c[sort_order]
-                idx_in_sorted = np.searchsorted(sorted_gcid_c, gcid)
+                sort_order = np.argsort(gcid_c[idx_beg_c[j]:idx_end_c[j]])
+                sorted_gcid_c = gcid_c[idx_beg_c[j]:idx_end_c[j]][sort_order]
+                idx_in_sorted = np.searchsorted(sorted_gcid_c, gcid[idx_beg[i]:idx_end[i]])
                 idx_2 = sort_order[idx_in_sorted]
 
                 idx_1 = idx_1 + idx_beg[i]
@@ -247,9 +247,9 @@ def assign_eig_seed(params):
             #     gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
 
             idx_1 = np.arange(len(gcid[idx_beg[i]:idx_end[i]]), dtype=int)
-            sort_order = np.argsort(gcid_c)
-            sorted_gcid_c = gcid_c[sort_order]
-            idx_in_sorted = np.searchsorted(sorted_gcid_c, gcid)
+            sort_order = np.argsort(gcid_c[idx_beg_c[j]:idx_end_c[j]])
+            sorted_gcid_c = gcid_c[idx_beg_c[j]:idx_end_c[j]][sort_order]
+            idx_in_sorted = np.searchsorted(sorted_gcid_c, gcid[idx_beg[i]:idx_end[i]])
             idx_2 = sort_order[idx_in_sorted]
 
             idx_1 = idx_1 + idx_beg[i]
