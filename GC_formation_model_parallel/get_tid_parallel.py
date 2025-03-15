@@ -172,8 +172,12 @@ def assign_eig(params):
                     continue
                 j = j[0]
                 
-                xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
-                    gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
+                # xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
+                #     gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
+
+                idx_1 = np.arange(len(gcid[idx_beg[i]:idx_end[i]]), dtype=int)
+                lookup = {id_: idx for idx, id_ in enumerate(gcid_c[idx_beg_c[j]:idx_end_c[j]])}
+                idx_2 = [lookup[id_] for id_ in gcid]
 
                 idx_1 = idx_1 + idx_beg[i]
                 idx_2 = idx_2 + idx_beg_c[j]
@@ -237,8 +241,12 @@ def assign_eig_seed(params):
                 continue
             j = j[0]
             
-            xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
-                gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
+            # xy, idx_1, idx_2 = np.intersect1d(gcid[idx_beg[i]:idx_end[i]], 
+            #     gcid_c[idx_beg_c[j]:idx_end_c[j]], return_indices=True)
+
+            idx_1 = np.arange(len(gcid[idx_beg[i]:idx_end[i]]), dtype=int)
+            lookup = {id_: idx for idx, id_ in enumerate(gcid_c[idx_beg_c[j]:idx_end_c[j]])}
+            idx_2 = [lookup[id_] for id_ in gcid]
 
             idx_1 = idx_1 + idx_beg[i]
             idx_2 = idx_2 + idx_beg_c[j]
