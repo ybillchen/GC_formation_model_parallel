@@ -131,7 +131,7 @@ def assign_eig(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
@@ -208,7 +208,7 @@ def assign_eig_seed(params):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid_c = np.loadtxt(gcid_name, dtype='int64')
+    gcid_c = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root_c, idx_beg_c, idx_end_c = np.loadtxt(
@@ -349,7 +349,7 @@ def combine_independent(params, irange=None, checkj=False, jrange=None):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, dtype='int64')[0]
+    gcid = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
@@ -428,7 +428,7 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, see
     root_name = run_params['resultspath'] + run_params['file_prefix'] + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, dtype='int64')[0]
+    gcid = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
