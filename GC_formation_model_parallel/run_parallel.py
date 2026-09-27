@@ -41,7 +41,8 @@ def run_serial(params, p, to_form=True, to_offset=True, to_assign=True):
         print('\nModel was run on %d halo(s) at process %d.\n'%(len(params['subs']),p))
 
 def run_parallel(params, Np=32, param_based=True, seed_based=False, 
-    to_form=True, to_offset=True, to_assign=True, to_tid=True, skip=None, checkj=False):
+    to_form=True, to_offset=True, to_assign=True, to_tid=True, skip=None, checkj=False, 
+    tid_engine='numba', tid_nthreads=None):
     assert not (param_based and seed_based)
 
     if to_form or to_offset or to_assign:
@@ -75,4 +76,5 @@ def run_parallel(params, Np=32, param_based=True, seed_based=False,
 
     if to_tid:
         get_tid_parallel(params, Np, file_prefix = 'combine', 
-            param_based=param_based, seed_based=seed_based, skip=skip, checkj=checkj)
+            param_based=param_based, seed_based=seed_based, skip=skip, checkj=checkj, 
+            engine=tid_engine, nthreads=tid_nthreads)

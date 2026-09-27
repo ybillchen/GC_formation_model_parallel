@@ -8,6 +8,8 @@ import numpy as np
 
 from GC_formation_model.get_tid import get_tid, get_tid_unit
 
+from .fast_tid import get_tid_unit_fast
+
 __all__ = ['combine_gc', 'combine_gc_seed', 'assign_eig', 'assign_eig_seed', 
     'get_tid_i', 'check_independent_status', 'combine_independent', 'get_tid_parallel']
 
@@ -280,9 +282,7 @@ def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params, k=-1):
     basepath = params['resultspath'] + 'independent_tidal_outputs/'
     file_prefix = params['file_prefix']
 
-    isExist = os.path.exists(basepath)
-    if not isExist:
-       os.makedirs(basepath)
+    os.makedirs(basepath, exist_ok=True) # avoid race between parallel workers
 
     if k < 0:
         file_exist = os.path.isfile(basepath+file_prefix+'_tidtag_i%d.txt'%(i))
@@ -292,7 +292,11 @@ def get_tid_i(i, gcid, hid_root, idx_beg, idx_end, params, k=-1):
     if file_exist:
         return 0
 
-    tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params, k)
+    if params.get('tid_engine', 'numba') == 'numba':
+        tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit_fast(i, gcid, hid_root, idx_beg, idx_end, 
+            params, k, nthreads=params.get('tid_nthreads'))
+    else:
+        tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params, k)
 
     if k < 0:
         np.savetxt(basepath+file_prefix+'_tidtag_i%d.txt'%(i), tag_i, fmt='%d')
@@ -404,9 +408,17 @@ def combine_independent(params, irange=None, checkj=False, jrange=None):
     np.savetxt(params['resultspath']+file_prefix+'_tideig2.txt', eig2, fmt='%.3e')
     np.savetxt(params['resultspath']+file_prefix+'_tideig3.txt', eig3, fmt='%.3e')
 
+# engine: 'numba' (fast, see fast_tid.py) or 'qhull' (original GC_formation_model code)
+# nthreads: numba threads per process; default splits all cores evenly among the Np processes
 def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, seed_based=False, 
-    skip=None, checkj=False):
+    skip=None, checkj=False, engine='numba', nthreads=None):
+    assert engine in ('numba', 'qhull')
     run_params = copy(params)
+
+    if nthreads is None:
+        nthreads = max(1, os.cpu_count() // Np)
+    run_params['tid_engine'] = engine
+    run_params['tid_nthreads'] = nthreads
 
     if param_based or seed_based:
         run_params['file_prefix'] = file_prefix

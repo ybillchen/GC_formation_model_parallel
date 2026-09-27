@@ -2,10 +2,12 @@
 
 from . import run_parallel
 from . import get_tid_parallel
-__all__ = run_parallel.__all__ + get_tid_parallel.__all__
+from . import fast_tid
+__all__ = run_parallel.__all__ + get_tid_parallel.__all__ + fast_tid.__all__
 
 from .run_parallel import *
 from .get_tid_parallel import *
+from .fast_tid import *
 from .version import __version__
 
 __name__ = 'GC_formation_model_parallel'

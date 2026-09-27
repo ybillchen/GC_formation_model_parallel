@@ -20,7 +20,7 @@ setup(
     description = 'A parallel toolkit for GC_formation_model.',
     long_description = long_description,
     long_description_content_type = 'text/markdown',
-    install_requires = ['numpy'],
+    install_requires = ['numpy', 'scipy', 'h5py', 'numba'],
     python_requires = '>=3.8',
     classifiers = [
         'Programming Language :: Python :: 3',
