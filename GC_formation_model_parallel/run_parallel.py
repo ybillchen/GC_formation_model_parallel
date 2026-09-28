@@ -16,6 +16,18 @@ from .get_tid_parallel import get_tid_parallel
 
 __all__ = ['run_parallel']
 
+
+def _model_params(params):
+    """Copy configuration without transient state from earlier model stages.
+
+    The main model constructs rng/rng_smhm/rng_feh per galaxy from seed fields.
+    Never inherit or serialize an advanced generator into another model job.
+    """
+    result = copy(params)
+    for key in ('rng', 'rng_smhm', 'rng_feh', 'cosmo'):
+        result.pop(key, None)
+    return result
+
 def run_serial(params, p, to_form=True, to_offset=True, to_assign=True):
 
     if params['verbose']:
@@ -24,7 +36,7 @@ def run_serial(params, p, to_form=True, to_offset=True, to_assign=True):
     allcat_name = params['allcat_base'] + '_s-%d_p2-%g_p3-%g.txt'%(
         params['seed'], params['p2'], params['p3'])
 
-    run_params = params
+    run_params = _model_params(params)
     run_params['allcat_name'] = allcat_name
 
     run_params['cosmo'] = astro_utils.cosmo(h=run_params['h100'], 
@@ -46,7 +58,7 @@ def run_parallel(params, Np=32, param_based=True, seed_based=False,
     assert not (param_based and seed_based)
 
     if to_form or to_offset or to_assign:
-        run_params = copy(params)
+        run_params = _model_params(params)
 
         para_list = []
         p = 0

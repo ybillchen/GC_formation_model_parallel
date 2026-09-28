@@ -353,7 +353,9 @@ def combine_independent(params, irange=None, checkj=False, jrange=None):
     root_name = params['resultspath'] + file_prefix + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
+    # Single-run catalogs contain [particle ID, quality]; combined catalogs
+    # contain IDs only. Always select column zero and retain a 1D array.
+    gcid = np.loadtxt(gcid_name, usecols=0, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
@@ -440,7 +442,9 @@ def get_tid_parallel(params, Np=32, file_prefix='combine', param_based=True, see
     root_name = run_params['resultspath'] + run_params['file_prefix'] + '_offset_root.txt'
 
     # load GC id
-    gcid = np.loadtxt(gcid_name, ndmin=1, dtype='int64')
+    # Single-run catalogs contain [particle ID, quality]; combined catalogs
+    # contain IDs only. Always select column zero and retain a 1D array.
+    gcid = np.loadtxt(gcid_name, usecols=0, ndmin=1, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
